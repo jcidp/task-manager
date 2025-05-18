@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
-    post "sign_in", to: "sessions#create"
-    post "sign_up", to: "registrations#create"
+    post "signup", to: "registrations#create"
+    post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
     resources :sessions, only: [ :index, :show, :destroy ]
     resource  :password, only: [ :edit, :update ]
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       resource :email_verification, only: [ :show, :create ]
       resource :password_reset,     only: [ :new, :edit, :create, :update ]
     end
-    resource :current_user, only: [ :show ]
+    get "me", to: "current_users#show"
   end
   get "*path", to: "application#fallback_index_html", constraints: ->(request) do
     !request.xhr? && request.format.html?

@@ -16,7 +16,7 @@ class Api::SessionsController < ApplicationController
       @session = user.sessions.create!
       response.set_header "X-Session-Token", @session.signed_id(expires_in: 1.days)
 
-      render json: @session, status: :created
+      render json: user, status: :created
     else
       render json: { error: "That email or password is incorrect" }, status: :unauthorized
     end
@@ -28,6 +28,6 @@ class Api::SessionsController < ApplicationController
 
   private
     def set_session
-      @session = Current.user.sessions.find(params[:id])
+      @session = Current.session
     end
 end
