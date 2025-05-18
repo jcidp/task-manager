@@ -1,13 +1,21 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
+import Login from "./pages/Login";
+import ProtectedRoutes from "./auth/ProtectedRoutes";
+import AuthProvider from "./auth/AuthProvider";
 
 const Router = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route index element={<App />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<ProtectedRoutes />}>
+            <Route index element={<App />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
