@@ -40,28 +40,25 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     initAuth();
   }, []);
 
-  const signup = async () => {};
+  const signup = async (signupParams: Parameters<Signup>[0]) => {
+    const data = await authApi.signup(signupParams);
+    localStorage.setItem("auth_token", data.token);
+    setToken(data.token);
+    setUser(data.user);
+  };
 
   const login = async (loginParams: Parameters<Login>[0]) => {
-    try {
-      const data = await authApi.login(loginParams);
-      localStorage.setItem("auth_token", data.token);
-      setToken(data.token);
-      setUser(data.user);
-    } catch (error) {
-      console.log("Error during login");
-    }
+    const data = await authApi.login(loginParams);
+    localStorage.setItem("auth_token", data.token);
+    setToken(data.token);
+    setUser(data.user);
   };
 
   const logout = async () => {
-    try {
-      if (token) await authApi.logout(token);
-      localStorage.removeItem("auth_token");
-      setToken(null);
-      setUser(null);
-    } catch (error) {
-      console.log("Error login out");
-    }
+    if (token) await authApi.logout(token);
+    localStorage.removeItem("auth_token");
+    setToken(null);
+    setUser(null);
   };
 
   const value = {

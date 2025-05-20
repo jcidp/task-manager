@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import ProtectedRoutes from "./auth/ProtectedRoutes";
 import AuthProvider from "./auth/AuthProvider";
 import ErrorPage from "./pages/ErrorPage";
+import Signup from "./pages/Signup";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
             <Route index element={<App />} />
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

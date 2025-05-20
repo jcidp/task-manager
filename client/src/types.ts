@@ -19,10 +19,18 @@ interface LoginParams {
 }
 
 interface SignupParams extends LoginParams {
-  confirmPassword: string;
+  confirmation: string;
 }
 
 type Signup = (signupParams: SignupParams) => Promise<void>;
 type Login = (loginParams: LoginParams) => Promise<void>;
 
-export type { Headers, ApiOptions, User, Signup, Login, LoginParams };
+export type {
+  Headers,
+  ApiOptions,
+  User,
+  Signup,
+  Login,
+  LoginParams,
+  SignupParams,
+};

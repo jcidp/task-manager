@@ -1,16 +1,12 @@
+import { useAuth } from "@/auth/AuthProvider";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { Button } from "./ui/button";
 import {
   Form,
   FormControl,
@@ -19,24 +15,34 @@ import {
   FormLabel,
   FormMessage,
 } from "./ui/form";
-import { useAuth } from "@/auth/AuthProvider";
-import { AxiosError } from "axios";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
 import { Alert, AlertDescription } from "./ui/alert";
 
-const loginFormSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string(),
-});
+const signupFormSchema = z
+  .object({
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(12),
+    confirmation: z.string().min(12),
+  })
+  .refine((data) => data.password === data.confirmation, {
+    message: "Passwords don't match",
+    path: ["confirmation"],
+  });
 
-type LoginFormValues = z.infer<typeof loginFormSchema>;
+type SignupFormValues = z.infer<typeof signupFormSchema>;
 
-const LoginForm = ({
+const SignupForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
-  const { login, isAuthenticated } = useAuth();
+  const { signup, isAuthenticated } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -44,31 +50,31 @@ const LoginForm = ({
     if (isAuthenticated) navigate("/");
   }, [isAuthenticated]);
 
-  const loginForm = useForm<LoginFormValues>({
-    resolver: zodResolver(loginFormSchema),
+  const signupForm = useForm<SignupFormValues>({
+    resolver: zodResolver(signupFormSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmation: "",
     },
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const onSubmit = async (values: SignupFormValues) => {
     setLoading(true);
     try {
-      await login(values);
+      await signup(values);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("caught");
-        console.log(error);
         Object.entries(error?.response?.data).forEach(([field, messages]) => {
-          console.log(field, messages);
-          loginForm.setError(field as keyof LoginFormValues, {
+          const formattedForm =
+            field === "password_confirmation" ? "confirmation" : field;
+          signupForm.setError(formattedForm as keyof SignupFormValues, {
             type: "server",
             message: Array.isArray(messages) ? messages[0] : messages,
           });
         });
       } else {
-        loginForm.setError("root", {
+        signupForm.setError("root", {
           type: "server",
           message: "An unexpected error occurred. Please try again.",
         });
@@ -79,7 +85,7 @@ const LoginForm = ({
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6,", className)} {...props}>
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
@@ -88,19 +94,19 @@ const LoginForm = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...loginForm}>
-            <form onSubmit={loginForm.handleSubmit(onSubmit)}>
+          <Form {...signupForm}>
+            <form onSubmit={signupForm.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
-                {loginForm.formState.errors.root && (
+                {signupForm.formState.errors.root && (
                   <Alert variant="destructive">
                     <AlertDescription>
-                      {loginForm.formState.errors.root.message}
+                      {signupForm.formState.errors.root.message}
                     </AlertDescription>
                   </Alert>
                 )}
                 <div className="grid gap-2">
                   <FormField
-                    control={loginForm.control}
+                    control={signupForm.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
@@ -120,7 +126,7 @@ const LoginForm = ({
                 </div>
                 <div className="grid gap-2">
                   <FormField
-                    control={loginForm.control}
+                    control={signupForm.control}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
@@ -137,14 +143,33 @@ const LoginForm = ({
                     )}
                   />
                 </div>
+                <div className="grid gap-2">
+                  <FormField
+                    control={signupForm.control}
+                    name="confirmation"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm password</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="************"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <Button type="submit" className="w-full">
-                  {loading ? "Loading..." : "Login"}
+                  {loading ? "Loading..." : "Sign up"}
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link to="/signup" className="underline underline-offset-4">
-                  Sign up
+                Already have an account?{" "}
+                <Link to="/login" className="underline underline-offset-4">
+                  Login
                 </Link>
               </div>
             </form>
@@ -155,4 +180,4 @@ const LoginForm = ({
   );
 };
 
-export default LoginForm;
+export default SignupForm;
