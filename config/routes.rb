@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       resource :password_reset,     only: [ :new, :edit, :create, :update ]
     end
     get "me", to: "current_users#show"
+    resources :tasks, except: [ :show ]
+    get "summary", to: "tasks#summary"
   end
   get "*path", to: "application#fallback_index_html", constraints: ->(request) do
     !request.xhr? && request.format.html?
