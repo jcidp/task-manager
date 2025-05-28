@@ -25,6 +25,22 @@ interface SignupParams extends LoginParams {
 type Signup = (signupParams: SignupParams) => Promise<void>;
 type Login = (loginParams: LoginParams) => Promise<void>;
 
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  due_date: string;
+  urgent: boolean;
+  important: boolean;
+  done: boolean;
+}
+
+interface SummaryTasks {
+  overdue: Task[];
+  today: Task[];
+  noDue: Task[];
+}
+
 export type {
   Headers,
   ApiOptions,
@@ -33,4 +49,6 @@ export type {
   Login,
   LoginParams,
   SignupParams,
+  Task,
+  SummaryTasks,
 };

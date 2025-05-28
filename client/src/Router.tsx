@@ -5,6 +5,7 @@ import ProtectedRoutes from "./auth/ProtectedRoutes";
 import AuthProvider from "./auth/AuthProvider";
 import ErrorPage from "./pages/ErrorPage";
 import Signup from "./pages/Signup";
+import Summary from "./pages/Summary";
 
 const Router = () => {
   return (
@@ -12,7 +13,9 @@ const Router = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<ProtectedRoutes />}>
-            <Route index element={<App />} />
+            <Route element={<App />}>
+              <Route index element={<Summary />} />
+            </Route>
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
