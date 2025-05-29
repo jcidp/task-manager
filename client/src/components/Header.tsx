@@ -7,8 +7,8 @@ const Header = () => {
 
   return (
     <header className="w-full flex justify-between px-4 pt-2">
-      <p>Taskmaster</p>
-      <div className="grid grid-cols-2">
+      <p className="font-bold">Taskmaster</p>
+      <div className="grid grid-cols-[max-content_max-content] gap-x-4">
         <ModeToggle />
         {isAuthenticated && <Button onClick={logout}>Logout</Button>}
       </div>

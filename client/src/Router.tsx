@@ -14,14 +14,14 @@ const Router = () => {
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <BrowserRouter>
           <Routes>
-            <Route element={<ProtectedRoutes />}>
-              <Route element={<App />}>
+            <Route element={<App />}>
+              <Route element={<ProtectedRoutes />}>
                 <Route index element={<Summary />} />
               </Route>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="*" element={<ErrorPage />} />
             </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
