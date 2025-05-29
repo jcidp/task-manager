@@ -29,7 +29,7 @@ const TaskList = ({ tasks, section }: TaskListProps) => {
               <div className="w-full grid grid-cols-[1fr_max-content] justify-between space-x-4">
                 <div className="grid grid-cols-[max-content_1fr] items-center">
                   <Input
-                    className="w-4 h-4 mr-2 accent-background"
+                    className="w-4 h-4 mr-2"
                     type="checkbox"
                     defaultChecked={task.done}
                     onClick={(e) => e.stopPropagation()}

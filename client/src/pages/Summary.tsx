@@ -72,7 +72,8 @@ const Summary = () => {
 
   return (
     <main>
-      <h1>Summary</h1>
+      <h1 className="text-3xl font-bold">Summary</h1>
+      <Button className="my-4">+ New task</Button>
       <TaskList section="Overdue" tasks={tasks?.overdue} />
       <TaskList section="Today" tasks={tasks?.today} />
       <TaskList section="No due" tasks={tasks?.noDue} />

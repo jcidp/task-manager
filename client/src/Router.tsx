@@ -6,22 +6,25 @@ import AuthProvider from "./auth/AuthProvider";
 import ErrorPage from "./pages/ErrorPage";
 import Signup from "./pages/Signup";
 import Summary from "./pages/Summary";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const Router = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<ProtectedRoutes />}>
-            <Route element={<App />}>
-              <Route index element={<Summary />} />
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <BrowserRouter>
+          <Routes>
+            <Route element={<ProtectedRoutes />}>
+              <Route element={<App />}>
+                <Route index element={<Summary />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </BrowserRouter>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   );
 };
