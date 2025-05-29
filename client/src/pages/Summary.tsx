@@ -71,15 +71,12 @@ const Summary = () => {
   }
 
   return (
-    <>
-      <h1>My tasks</h1>
-      <h2>Overdue</h2>
-      <TaskList tasks={tasks?.overdue} />
-      <h2>Today</h2>
-      <TaskList tasks={tasks?.today} />
-      <h2>No due</h2>
-      <TaskList tasks={tasks?.noDue} />
-    </>
+    <main>
+      <h1>Summary</h1>
+      <TaskList section="Overdue" tasks={tasks?.overdue} />
+      <TaskList section="Today" tasks={tasks?.today} />
+      <TaskList section="No due" tasks={tasks?.noDue} />
+    </main>
   );
 };
 

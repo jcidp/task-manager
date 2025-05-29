@@ -8,7 +8,8 @@ function App() {
 
   return (
     <>
-      <header>
+      <header className="w-full flex justify-between px-4 pt-2">
+        <p>Taskmaster</p>
         <Button onClick={logout}>Logout</Button>
       </header>
       <Outlet />
