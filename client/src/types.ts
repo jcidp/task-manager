@@ -28,8 +28,8 @@ type Login = (loginParams: LoginParams) => Promise<void>;
 interface Task {
   id: number;
   title: string;
-  description: string;
-  due_date: string;
+  description?: string;
+  due_date?: string;
   urgent: boolean;
   important: boolean;
   done: boolean;

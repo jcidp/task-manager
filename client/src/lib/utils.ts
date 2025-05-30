@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function isOverdue(date: string | null) {
+export function isOverdue(date: string | null | undefined) {
   if (!date) return false;
   const inputDate = new Date(date);
   const today = new Date();
@@ -16,7 +16,7 @@ export function isOverdue(date: string | null) {
   return inputDate < today;
 }
 
-export function isDueToday(date: string | null) {
+export function isDueToday(date: string | null | undefined) {
   if (!date) return false;
   const today = new Date();
   const inputDate = new Date(date);
